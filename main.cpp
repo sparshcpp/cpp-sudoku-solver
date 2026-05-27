@@ -2,20 +2,21 @@
 #include <vector>
 using namespace std;
 
-// Function to check if it is safe to place num at mat[row][col]
+// Function to validate  whether a number can be placed
+// Safely in the current row, column, and 3x3 grid
 bool isSafe(vector<vector<int>> &mat, int row, int col, int num) {
 
-    // Check if num exist in the row
+    // Check whether the current number already exists in the row
     for (int x = 0; x <= 8; x++)
         if (mat[row][x] == num)
             return false;
 
-    // Check if num exist in the col
+    // Check whether the current number already exists in the column
     for (int x = 0; x <= 8; x++)
         if (mat[x][col] == num)
             return false;
 
-    // Check if num exist in the 3x3 sub-matrix
+    // Validate number placement inside the 3x3 subgrid
     int startRow = row - (row % 3), startCol = col - (col % 3);
 
     for (int i = 0; i < 3; i++)
@@ -26,7 +27,7 @@ bool isSafe(vector<vector<int>> &mat, int row, int col, int num) {
     return true;
 }
 
-// Function to solve the Sudoku problem
+// Recursive function to solve sudoku using backtracking
 bool solveSudokuRec(vector<vector<int>> &mat, int row, int col) {
     int n = mat.size();
 
@@ -51,6 +52,8 @@ bool solveSudokuRec(vector<vector<int>> &mat, int row, int col) {
             mat[row][col] = num;
             if (solveSudokuRec(mat, row, col + 1))
                 return true;
+			
+			// Backtrack if current placement does not lead to a valid solution
             mat[row][col] = 0;
         }
     }
